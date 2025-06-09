@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: acme-shop-db
+    env-file:
+      - .env
+    volumes:
+      - .docker/data/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - acme-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ..docker/dockerfile.backend
+    container_name: acme-shop-backend
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - acme-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../dockerfile.frontend
+    container_name: acme-shop-frontend
+    ports:
+      - "4000:3000"
+    depends_on: backend
+    networks:
+      - acme-network
+
+  networks:
+    acme-network:
+      driver: bridge
