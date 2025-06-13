@@ -1,0 +1,16 @@
+{
+    "backend/**/*.{ts,tsx}": [
+      "npm run --prefix backend lint:fix --",
+      "npm run --prefix backend format --"
+    ],
+    "frontend/**/*.{ts,tsx}": [
+      "npm run --prefix frontend lint:fix",
+      "npm run --prefix frontend format"
+    ],
+    "backend/**/*.{json,md,css,scss}": [
+      "npm run --prefix backend format"
+    ],
+    "frontend/**/*.{json,md,css,scss}": [
+      "npm run --prefix frontend format"
+    ]
+}
