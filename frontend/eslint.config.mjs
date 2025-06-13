@@ -4,8 +4,11 @@ import parserTs from '@typescript-eslint/parser';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import globals from 'globals';
+import next from 'eslint-config-next';
+
 
 export default [
+  ...next(),
   js.configs.recommended,
 
   {
