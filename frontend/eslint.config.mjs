@@ -38,7 +38,8 @@ export default [
       'react/jsx-no-target-blank': ['warn'],
       'react/no-unescaped-entities': ['warn'],
       'no-console': ['warn'],
-      'no-debugger': ['error']
+      'no-debugger': ['error'],
+      'prettier/prettier': ['warn', { endOfLine: 'auto' }]
     },
   },
 
