@@ -1,7 +1,81 @@
 # acme-shop
 Full stack application to sell products online for ACME startup.
 
-## 🛠️ Database Setup
+---
+## Technical Decisions & Justifications
+
+This project was built with a modern full-stack architecture prioritizing **scalability**, **developer experience**, and **production readiness**. Below are the key technologies chosen and the reasons behind them:
+
+---
+
+### Backend: NestJS
+
+NestJS was selected for its opinionated and modular structure, which is ideal for building complex GraphQL APIs.
+
+- Decorator-based syntax (`@Query`, `@Mutation`, `@Resolver`) improves clarity and reduces boilerplate.
+- Built-in exception filters allow for elegant GraphQL error handling.
+- Powerful Dependency Injection (DI) system simplifies unit testing and service isolation.
+- Aligns well with enterprise-grade Node.js development patterns.
+
+---
+
+### Frontend: Next.js
+
+Next.js offers the best balance between flexibility and developer ergonomics, especially for e-commerce and authenticated apps.
+
+- Native support for server-side rendering (SSR) and API routes.
+- `getServerSideProps` used for secure, authenticated order retrieval.
+- Optimized routing and code-splitting for performance.
+- Seamless Vercel integration for CI/CD and preview deployments.
+
+---
+
+###  Database: PostgreSQL + TypeORM
+
+- **PostgreSQL**:
+  - Relational integrity guarantees reliable transactional order processing.
+  - JSONB columns provide flexibility for storing dynamic product attributes.
+  - Rich SQL feature set, ideal for complex querying and reporting.
+- **TypeORM**:
+  - Clear entity-based schema modeling via decorators.
+  - Supports both Active Record and Data Mapper patterns.
+  - Migration system supports consistent schema evolution.
+
+---
+
+### Money Handling
+
+- All monetary values (e.g., `price`, `cost`) are stored in **cents as integers** to prevent floating-point precision issues.
+- This follows best practices used by Stripe, Shopify, Amazon, MercadoLibre, and PayPal.
+- Utility functions (`toCents`, `fromCents`) handle conversions between display amounts and stored values.
+
+---
+
+### Tooling & Dev Experience
+
+- **ESLint + Prettier + Husky**:
+  - Ensures code quality and consistent formatting with pre-commit hooks.
+- **Dockerized Setup**:
+  - Multi-stage builds for optimized image sizes.
+  - Ensures parity between development and production environments.
+
+---
+
+### Risk Mitigation Strategies
+
+- **Authentication**:
+  - JWT stored in `httpOnly` cookies to prevent XSS.
+  - Refresh token rotation implemented for session security.
+- **GraphQL Optimization**:
+  - DataLoader integration planned to resolve N+1 queries.
+- **Validation & Type Safety**:
+  - Decorators like `@IsEmail()`, `@MinLength()` from `class-validator`.
+  - Schema-first GraphQL ensures validation at API boundary.
+
+---
+
+
+## Database Setup
 
 ### 1. Run Migrations
 
