@@ -1,7 +1,9 @@
 # acme-shop
+
 Full stack application to sell products online for ACME startup.
 
 ---
+
 ## Technical Decisions & Justifications
 
 This project was built with a modern full-stack architecture prioritizing **scalability**, **developer experience**, and **production readiness**. Below are the key technologies chosen and the reasons behind them:
@@ -30,7 +32,7 @@ Next.js offers the best balance between flexibility and developer ergonomics, es
 
 ---
 
-###  Database: PostgreSQL + TypeORM
+### Database: PostgreSQL + TypeORM
 
 - **PostgreSQL**:
   - Relational integrity guarantees reliable transactional order processing.
@@ -74,7 +76,6 @@ Next.js offers the best balance between flexibility and developer ergonomics, es
 
 ---
 
-
 ## Database Setup
 
 ### 1. Run Migrations
@@ -96,6 +97,7 @@ After running migrations, you can populate the database with initial data (users
 ```bash
 npm run seed
 ```
+
 This will:
 
 - Create an admin user:
@@ -116,8 +118,8 @@ This will:
 
 Passwords are securely hashed using **bcrypt** before being stored in the database.
 
-
 ## 3. Notes on Monetary Values
+
 The `price` and `cost` fields are stored in **cents as integers** (e.g., `$25.99` is stored as `2599`).
 This approach avoids precision issues common with floating-point numbers and is widely used in production systems (e.g., **Stripe, Shopify, Amazon, PayPal, MercadoLibre**).
 
@@ -127,11 +129,34 @@ Utility functions such as `toCents()` and `fromCents()` are available in `src/ut
 
 ```ts
 // Instead of
-price: 19.99  // ❌ prone to floating-point issues
+price: 19.99; // ❌ prone to floating-point issues
 
 // Use
-priceCents: 1999  // ✅ precise, safe, consistent
+priceCents: 1999; // ✅ precise, safe, consistent
 ```
 
+## GraphQL DTO Convention
 
+This project uses a clear separation between **input** and **output** types when defining GraphQL DTOs.
 
+### Why this approach?
+
+In GraphQL, the distinction between what is sent **to** the API (`@InputType`) and what is returned **from** it (`@ObjectType`) is crucial for schema clarity and maintainability.
+
+### Folder structure example
+
+```csharp
+src/
+├── user/
+│ ├── dto/
+│ │ ├── user.input.ts # @InputType - for mutations
+│ │ └── user.output.ts # @ObjectType - for queries and responses
+```
+
+### Benefits
+
+- Makes the schema more explicit and predictable
+- Easier to evolve independently (e.g., hiding internal fields from outputs)
+- Aligns with GraphQL tooling and community conventions
+
+This convention is recommended for **code-first GraphQL** development with NestJS.
