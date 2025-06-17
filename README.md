@@ -118,7 +118,16 @@ This will:
 
 Passwords are securely hashed using **bcrypt** before being stored in the database.
 
-## 3. Notes on Monetary Values
+## 3. Database Schema
+
+Below is the database schema used in this project:
+
+![Database Diagram](./docs/Acme_DB2_diagram.png)
+
+[View the schema online](https://dbdiagram.io/d/Acme_DB2-684ddac63cc77757c8e67b10)
+The database schema is designed using [DBdiagram.io](https://dbdiagram.io).
+
+## 4. Notes on Monetary Values
 
 The `price` and `cost` fields are stored in **cents as integers** (e.g., `$25.99` is stored as `2599`).
 This approach avoids precision issues common with floating-point numbers and is widely used in production systems (e.g., **Stripe, Shopify, Amazon, PayPal, MercadoLibre**).
@@ -135,7 +144,7 @@ price: 19.99; // ❌ prone to floating-point issues
 priceCents: 1999; // ✅ precise, safe, consistent
 ```
 
-## GraphQL DTO Convention
+## 5. GraphQL DTO Convention
 
 This project uses a clear separation between **input** and **output** types when defining GraphQL DTOs.
 
