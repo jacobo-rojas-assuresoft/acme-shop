@@ -8,8 +8,16 @@ export type JwtPayloadUser = {
   active: boolean;
 };
 
-export interface JwtPayload {
+export type JwtPayload = {
   sub: number;
   email: string;
   role: string;
+  name?: string;
+  active?: boolean;
+};
+
+export interface GqlContext {
+  req: {
+    user: JwtPayloadUser;
+  };
 }
