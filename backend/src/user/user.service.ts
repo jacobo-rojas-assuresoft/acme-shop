@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { UserRole } from 'src/enums/user-role.enum';
 import { Repository } from 'typeorm';
+import { hashPassword } from '../utils/auth';
 import { CreateUserInput } from './dto/create-user.input';
 
 @Injectable()
@@ -25,7 +26,8 @@ export class UserService {
   }
 
   async create(data: CreateUserInput): Promise<User> {
-    const user = this.userRepo.create(data);
+    const hashedPassword = await hashPassword(data.password, 10);
+    const user = this.userRepo.create({ ...data, password: hashedPassword });
     return this.userRepo.save(user);
   }
 

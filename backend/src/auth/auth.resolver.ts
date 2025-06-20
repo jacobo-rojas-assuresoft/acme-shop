@@ -1,5 +1,6 @@
 import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateUserInput } from 'src/user/dto/create-user.input';
 import { User } from '../entities/user.entity';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -21,6 +22,22 @@ export class AuthResolver {
     const user = await this.authService.validateUser(email, password);
     if (!user) throw new Error('Invalid credentials');
     return await this.authService.login(user);
+  }
+
+  @Mutation(() => LoginResponse)
+  async register(@Args('input') input: CreateUserInput): Promise<LoginResponse> {
+    const existing = await this.userService.findByEmail(input.email);
+    if (existing) {
+      throw new Error('The email address is already registered.');
+    }
+
+    const user = await this.userService.create(input);
+    const token = await this.authService.login(user);
+
+    return {
+      access_token: token.access_token,
+      user,
+    };
   }
 
   @Query(() => User)
