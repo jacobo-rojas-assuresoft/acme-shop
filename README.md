@@ -127,7 +127,15 @@ Below is the database schema used in this project:
 [View the schema online](https://dbdiagram.io/d/Acme_DB2-684ddac63cc77757c8e67b10)
 The database schema is designed using [DBdiagram.io](https://dbdiagram.io).
 
-## 4. Notes on Monetary Values
+## 4. Soft Delete Support (deletedAt field)
+To improve data integrity and enable auditability, this project uses soft deletes for certain entities such as Product.
+
+Instead of permanently removing records from the database, we mark them as deleted using a deletedAt field. This approach provides several advantages:
+
+- **Auditability**: Deleted records remain in the database, allowing historical tracking and recovery.
+- **Prevention of accidental loss**: In case of unintentional deletions, data can be restored easily.
+
+## 5. Notes on Monetary Values
 
 The `price` and `cost` fields are stored in **cents as integers** (e.g., `$25.99` is stored as `2599`).
 This approach avoids precision issues common with floating-point numbers and is widely used in production systems (e.g., **Stripe, Shopify, Amazon, PayPal, MercadoLibre**).
@@ -144,7 +152,7 @@ price: 19.99; // ❌ prone to floating-point issues
 priceCents: 1999; // ✅ precise, safe, consistent
 ```
 
-## 5. GraphQL DTO Convention
+## 6. GraphQL DTO Convention
 
 This project uses a clear separation between **input** and **output** types when defining GraphQL DTOs.
 
