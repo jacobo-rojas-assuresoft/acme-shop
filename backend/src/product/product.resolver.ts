@@ -1,11 +1,17 @@
+import { UseGuards } from '@nestjs/common';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { ProductOutput } from './dto/product.output';
-import { ProductService } from './product.service';
-import { Product } from 'src/entities/product.entity';
+import { UserRole } from 'src/enums/user-role.enum';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Product } from '../entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
+import { ProductOutput } from './dto/product.output';
 import { UpdateProductInput } from './dto/update-product.input';
+import { ProductService } from './product.service';
 
-@Resolver()
+@Resolver(() => Product)
+@UseGuards(GqlAuthGuard, RolesGuard)
 export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
@@ -25,6 +31,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => Product)
+  @Roles(UserRole.ADMIN)
   async createProduct(@Args('input') input: CreateProductInput): Promise<Product> {
     return this.productService.create(input);
   }
@@ -38,6 +45,7 @@ export class ProductResolver {
   }
 
   @Mutation(() => Boolean)
+  @Roles(UserRole.ADMIN)
   async deleteProduct(@Args('id', { type: () => Int }) id: number): Promise<boolean> {
     return this.productService.delete(id);
   }

@@ -11,7 +11,7 @@ export class LoginUserInput {
   @Field()
   @IsNotEmpty({ message: 'Password is required' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
-  @MaxLength(32, { message: 'Password must not exceed 30 characters' })
+  @MaxLength(30, { message: 'Password must not exceed 30 characters' })
   // @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]+$/, {
   //   message: 'Password must contain at least one letter and one number',
   // })
