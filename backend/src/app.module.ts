@@ -1,12 +1,13 @@
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { HelloModule } from './hello/hello.module';
+import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { AuthModule } from './auth/auth.module';
     ProductModule,
     UserModule,
     AuthModule,
+    OrderModule,
   ],
 })
 export class AppModule {}
