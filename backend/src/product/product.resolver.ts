@@ -6,6 +6,7 @@ import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Product } from '../entities/product.entity';
 import { CreateProductInput } from './dto/create-product.input';
+import { GetProductsArgs } from './dto/get-products.args';
 import { ProductOutput } from './dto/product.output';
 import { UpdateProductInput } from './dto/update-product.input';
 import { ProductService } from './product.service';
@@ -16,8 +17,8 @@ export class ProductResolver {
   constructor(private readonly productService: ProductService) {}
 
   @Query(() => [ProductOutput])
-  async getProducts(): Promise<ProductOutput[]> {
-    return this.productService.findAll();
+  async getProducts(@Args() args: GetProductsArgs): Promise<ProductOutput[]> {
+    return this.productService.findWithPagination(args);
   }
 
   @Query(() => [Product])

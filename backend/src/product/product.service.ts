@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { Product } from '../entities/product.entity';
-import { UpdateProductInput } from './dto/update-product.input';
 import { CreateProductInput } from './dto/create-product.input';
+import { GetProductsArgs } from './dto/get-products.args';
+import { UpdateProductInput } from './dto/update-product.input';
 
 @Injectable()
 export class ProductService {
@@ -11,6 +12,29 @@ export class ProductService {
     @InjectRepository(Product)
     private readonly productRepo: Repository<Product>
   ) {}
+
+  async findWithPagination(args: GetProductsArgs): Promise<Product[]> {
+    try {
+      const { search, limit, offset = 0 } = args;
+
+      if (limit <= 0 || offset < 0) {
+        throw new Error('Invalid pagination parameters');
+      }
+
+      const query = this.productRepo.createQueryBuilder('product');
+
+      if (search) {
+        query.where([{ name: Like(`%${search}%`) }, { description: Like(`%${search}%`) }]);
+      }
+
+      const result = await query.skip(offset).take(limit).getMany();
+      return result;
+    } catch (error: unknown) {
+      throw new Error(
+        `Failed to fetch products: ${error instanceof Error ? error.message : 'Unknown error'}`
+      );
+    }
+  }
 
   async findAll(): Promise<Product[]> {
     return this.productRepo.find();
