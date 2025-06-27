@@ -31,6 +31,13 @@ export default function ProductsPage() {
 
       <SearchBar onSearch={setSearchTerm} />
 
+      {loading && (
+        <div className="text-center py-4">
+          <p>Cargando...</p>
+        </div>
+      )}
+      {error && <div className="text-red-500 py-4">Error: {error.message}</div>}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.getProducts.map((product: Product) => (
           <ProductCard key={`${product.id}-${searchTerm}-${page}`} product={product} />
