@@ -1,5 +1,5 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { Order } from '../entities/order.entity';
@@ -29,6 +29,11 @@ export class OrderResolver {
   @Query(() => [Order])
   async orderHistory(): Promise<Order[]> {
     return this.orderService.findAllOrders();
+  }
+
+  @Query(() => Order)
+  async order(@Args('id', { type: () => Int }) id: number): Promise<Order> {
+    return await this.orderService.findById(id);
   }
 
   @Mutation(() => Order)
