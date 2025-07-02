@@ -1,3 +1,5 @@
+import Cart from '@/components/Cart';
+import { CartProvider } from '@/context/CartContext';
 import { ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/app';
 import { AuthProvider } from '../context/AuthContext';
@@ -8,7 +10,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <AuthProvider>
-        <Component {...pageProps} />
+        <CartProvider>
+          <Component {...pageProps} />
+          <Cart />
+        </CartProvider>
       </AuthProvider>
     </ApolloProvider>
   );

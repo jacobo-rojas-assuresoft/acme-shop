@@ -1,5 +1,6 @@
 import { Product } from '../types';
 import { formatPrice } from '../utils/currency';
+import AddToCartButton from './AddToCartButton';
 
 interface ProductCardProps {
   product: Product;
@@ -17,12 +18,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <h3 className="font-bold text-lg">{product.name}</h3>
         <p className="text-gray-600">{product.description || '. '}</p>
         <p className="text-blue-600 font-semibold mt-2">${formatPrice(product.price)}</p>
-        <button
-          className="mt-2 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
-          onClick={() => alert(`Producto ${product.name} añadido (simulado)`)}
-        >
-          Add to Cart
-        </button>
+        <AddToCartButton product={product} />
       </div>
     </div>
   );

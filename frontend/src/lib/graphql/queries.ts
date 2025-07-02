@@ -8,6 +8,32 @@ export const GET_PRODUCTS = gql`
       price
       description
       image
+      stock
+    }
+  }
+`;
+
+export const GET_ORDER_DETAILS = gql`
+  query GetOrderDetails($id: ID!) {
+    order(id: $id) {
+      id
+      total
+      status
+      createdAt
+      items {
+        product {
+          id
+          name
+          price
+          image
+        }
+        quantity
+      }
+      customer {
+        name
+        email
+        address
+      }
     }
   }
 `;

@@ -4,8 +4,9 @@ import { useEffect, useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import SearchBar from '../components/SearchBar';
 import { GET_PRODUCTS } from '../lib/graphql/queries';
+import withAuth from '@/components/AuthRoute';
 
-export default function ProductsPage() {
+function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const limit = 6;
@@ -64,3 +65,5 @@ export default function ProductsPage() {
     </div>
   );
 }
+
+export default withAuth(ProductsPage);
